@@ -11,31 +11,27 @@ int main(){
     int n,m;
     cin>>n>>m;
     vector<int> room(n+1);
-    vector<int> sum(2*n+1);
-    sum[0] = 0;
-    for(int i=1; i<=n; i++){
+    vector<int> q(m);
+    vector<int> pre(2*n+1);
+    for(int i=0; i<n; i++){
         cin>>room[i];
-        sum[i] = sum[i-1]+room[i];
+        if(i) pre[i] = pre[i-1]+room[i];
+        else pre[i] = room[i];
     }
-    for(int i=n+1; i<=2*n; i++){
-        sum[i] = sum[n] + sum[i-n];
+    for(int i=n; i<2*n; i++){
+        pre[i] = pre[n-1]+pre[room[i-n]];
     }
-
-    // for(int i=0; i<=2*n; i++){
-    //     cout<<sum[i]<<" ";
-    // }cout<<endl;
-
-    int pos = 1;
-    int q;
     for(int i=0; i<m; i++){
-        cin>>q;
-        int temp = sum[pos-1];
-        auto it = lower_bound(sum.begin()+pos, sum.end(), temp+q);
-        pos = it-sum.begin();
-        //cout<<pos<<"\n";
-        pos%=n;
-        pos++;
+        cin>>q[i];
     }
-    
-    cout<<pos-1<<"\n";
+    int pos = 0, i=0;
+    int temp = 0;
+    while(i!=m){
+        auto it =upper_bound(pre.begin()+pos, pre.end(), pre[pos-1]+q[i]);
+        pos = it-pre.begin();
+        pos%=n;
+        i++;
+        cout<<pos<<"\n";
+    }
+    cout<<pos<<"\n";
 }

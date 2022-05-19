@@ -4,20 +4,18 @@
 
 using namespace std;
 
-double n, a, b, c;
+double n, a, b, c, t;
 double e[301][301][301];
 
 double E(int a, int b, int c){
     if(!(a||b||c))
         return e[a][b][c] = 0;
+    if(a<0 || b<0 || c<0)
+        return -1;
     if(e[a][b][c])
         return e[a][b][c];
-    int t = a+b+c;
-    if(a>0) e[a][b][c] += (1.0*a/t) * (E(a-1,b,c)+1);
-    if(b>0) e[a][b][c] += (1.0*b/t) * (E(a+1,b-1,c)+1);
-    if(c>0) e[a][b][c] += (1.0*c/t) * (E(a,b+1,c-1)+1);
-    e[a][b][c] += (1.0*n/t) -1;
-    //cout<<e[a][b][c]<<"\n";
+    double t = a+b+c;
+    e[a][b][c] = ((a/t) * (E(a-1,b,c)+1) + (b/t) * (E(a+1,b-1,c)+1) + (c/t) * (E(a,b+1,c-1)+1) + (n/t) -1);
     return e[a][b][c];
 }
 int main(){

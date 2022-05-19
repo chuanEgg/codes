@@ -35,6 +35,7 @@ int main(){
             used[i] = 0;
         }
         sort(s, s+n);
-        dfs(0, 0);
+        if(t)
+            cout <<"\n";
     }
 }

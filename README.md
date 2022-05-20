@@ -29,7 +29,7 @@
 - {problem_id}.cpp
 - ex : a007.cpp
 
-### Sprout
+### Sprout (資訊之芽)
 - NTU held course
 - 2 or 3 digits number with a prefix "s"
 - s{problem_id}.cpp

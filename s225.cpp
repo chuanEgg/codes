@@ -1,7 +1,5 @@
-#pragma GCC optimize("Ofast")
-#pragma GCC optimize("O1")
-#pragma GCC optimize("O2")
-#pragma GCC optimize("O3")
+#pragma GCC optimize("Ofast,unroll-loops")
+#pragma GCC target("sse,sse2,sse3,avx,avx2")
 #include <bits/stdc++.h>
 
 using namespace std;
@@ -33,8 +31,8 @@ int main(){
         vector<vector<int>> pass(n, vector<int>(n, 0));
         //pass[{a, b}] -> points on ax^2 + bx 
         // vector<int> mx(n, 0);
-        for(int i=0; i<n; i++){
-            for(int j=i+1; j<n; j++){
+        for(register int i=0; i<n; i++){
+            for(register int j=i+1; j<n; j++){
                 double delta = s[i].x * s[j].x * (s[i].x - s[j].x);
                 double a = (s[j].x * s[i].y - s[i].x * s[j].y)/delta;
                 double b = (s[i].x * s[i].x * s[j].y - s[j].x * s[j].x * s[i].y)/delta;
@@ -51,20 +49,22 @@ int main(){
         vector<int> dp(1<<n, INF);
         dp[0] = 0;
         
-        for(int mask = 0; mask <= all; mask++){
+        for(register int mask = 0; mask <= all; mask++){
             if(dp[mask] >= INF) continue;
-            for(int i=0; i<n; i++){
+            for(register int i=0; i<n; i++){
                 if(!(mask & bitmask[i])){
-                    for(int j=i+1; j<n; j++){
+                    for(register int j=i+1; j<n; j++){
                         if(!(mask & bitmask[j]) && pass[i][j] && !(pass[i][j] & mask)){
                             dp[mask|pass[i][j]] = min(dp[mask] + 1, dp[mask|pass[i][j]]);
                         }
                     }
                     // dp[mask|mx[i]] = min(dp[mask|mx[i]], dp[mask]+1);
                     dp[mask|bitmask[i]] = min(dp[mask]+1, dp[mask|bitmask[i]]);
+                    break;
                 }
             }
         }
+         
         cout << dp[all] <<"\n";
     }
 }

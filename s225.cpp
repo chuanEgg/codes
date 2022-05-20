@@ -1,6 +1,7 @@
-#pragma GCC optimize ("Ofast", "unroll-loops")
-#pragma comment(linker, "/stack:200000000")
-#pragma GCC target("sse,sse2,sse3,ssse3,sse4,popcnt,abm,mmx,avx,avx2,tune=native")
+#pragma GCC optimize("Ofast")
+#pragma GCC optimize("O1")
+#pragma GCC optimize("O2")
+#pragma GCC optimize("O3")
 #include <bits/stdc++.h>
 
 using namespace std;
@@ -43,11 +44,6 @@ int main(){
                         pass[i][j] |= bitmask[k];
                     }
                 }
-                // if(__builtin_popcount(pass[i][j]) > __builtin_popcount(mx[i])){
-                //     mx[i] = pass[i][j];
-                // }
-                // cout << i <<' '<<j<<' ' <<pass[{i, j}] <<'\n';
-                // cout << a <<" "<< b<<'\n';
             }
         }
 
@@ -56,6 +52,7 @@ int main(){
         dp[0] = 0;
         
         for(int mask = 0; mask <= all; mask++){
+            if(dp[mask] >= INF) continue;
             for(int i=0; i<n; i++){
                 if(!(mask & bitmask[i])){
                     for(int j=i+1; j<n; j++){

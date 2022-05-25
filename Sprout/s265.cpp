@@ -67,6 +67,6 @@ int main(){
     }
     for(int i=0; i<ans.size(); i++)
         cout << ans[i] <<(" \n"[i == ans.size()-1]);
-    
+    if(ans.empty()) cout << "\n";
 }
 // a/b mod p = ab^(p-2) mod p

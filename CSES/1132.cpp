@@ -1,44 +1,51 @@
-#include <iostream>
-#include <vector>
-#include <cstring>
-#include <algorithm>
+#pragma GCC optimize("Ofast")
+#pragma GCC optimize("O1")
+#pragma GCC optimize("O2")
+#pragma GCC optimize("O3")
+#include <bits/stdc++.h>
 
 using namespace std;
+
 const int maxn = 2e5+5;
 vector<int> adj[maxn];
+vector<int> ans(maxn, -1);
+int n;
 
-int ans[maxn]{0}, dp[maxn]{0}, n;
-void dfs(int u, int p, int dep){
-    ans[1] += dep;
-    dp[u] = 1;
-    for(auto v:adj[u]){
-        if(v == p) continue;
-        dfs(v, u, dep+1);
-        dp[u] += dp[v];
+int bfs(int par){
+    int u;
+    queue<int> q;
+    vector<int> d(n+1, -1);
+    d[par] = 0;
+    ans[par] = max(ans[par], d[par]);
+    q.push(par);
+    while(!q.empty()){
+        u = q.front();
+        q.pop();
+        for(int v:adj[u]){
+            if(d[v] == -1){
+                q.push(v);
+                d[v] = d[u] + 1;
+                ans[v] = max(ans[v], d[v]);
+            }
+        }
     }
-}
-void reroot(int u, int p){
-    for(auto v:adj[u]){
-        if(v == p) continue;
-        ans[v] += ans[u]+n-2*dp[v];
-        reroot(v, u);
-        //ans[v] -= ans[u]+n-2*dp[v];
-    }
+    return u;
 }
 int main(){
     ios_base::sync_with_stdio(false);
     cin.tie(0);
     cin >> n;
-    for(int i=1; i<n; i++){
+    for(int i=0; i<n-1; i++){
         int u, v;
-        cin>>u>>v;
+        cin >> u >> v;
         adj[u].push_back(v);
         adj[v].push_back(u);
     }
-    dfs(1, 0, 0);
-    reroot(1, 0);
+    int d1 = bfs(1);
+    int d2 = bfs(d1);
+    bfs(d2);
     for(int i=1; i<=n; i++){
-        cout<<ans[i]<<" ";
+        cout << ans[i] << ' ';
     }
-    cout<<"\n";
+    cout << '\n';
 }
